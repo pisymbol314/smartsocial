@@ -1,13 +1,42 @@
 const API_URL = 'http://localhost:5000/suggest-comment';
 
-// Initialize the enhanced popup from second file
+// Initialize the enhanced popup
 const suggestionPopup = (function() {
   const popup = document.createElement('div');
   popup.id = 'comment-suggester-popup';
-  popup.style.cssText = 'position: fixed; top: 100px; left: 100px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 100000; width: 400px; max-width: 90vw; max-height: 80vh; overflow: auto; display: none; resize: both; min-width: 300px; min-height: 200px;';
+  popup.style.cssText = `
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 100000;
+    width: 400px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: auto;
+    display: none;
+    resize: both;
+    min-width: 300px;
+    min-height: 200px;
+    cursor: default;
+  `;
 
+  // Header with move cursor
   const header = document.createElement('div');
-  header.style.cssText = 'padding: 10px; cursor: move; background: #f5f5f5; border-radius: 8px 8px 0 0; margin: -20px -20px 20px -20px; display: flex; justify-content: space-between; align-items: center;';
+  header.style.cssText = `
+    padding: 10px;
+    cursor: move;
+    background: #f5f5f5;
+    border-radius: 8px 8px 0 0;
+    margin: -20px -20px 20px -20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  `;
   
   const title = document.createElement('h3');
   title.textContent = 'Suggested Comment';
@@ -15,33 +44,71 @@ const suggestionPopup = (function() {
   
   const closeBtn = document.createElement('button');
   closeBtn.innerHTML = '&times;';
-  closeBtn.style.cssText = 'background: none; border: none; font-size: 20px; cursor: pointer; padding: 0; line-height: 1;';
+  closeBtn.style.cssText = `
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  `;
 
   header.appendChild(title);
   header.appendChild(closeBtn);
   popup.appendChild(header);
 
+  // Content area with text cursor
   const content = document.createElement('div');
   content.id = 'suggestion-text';
-  content.style.cssText = 'white-space: pre-wrap; margin-bottom: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; max-height: 300px; overflow-y: auto;';
+  content.style.cssText = `
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    cursor: text;
+  `;
   popup.appendChild(content);
 
+  // Button container
   const btnContainer = document.createElement('div');
-  btnContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 15px;';
+  btnContainer.style.cssText = `
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  `;
 
   const copyBtn = document.createElement('button');
   copyBtn.textContent = 'Copy';
-  copyBtn.style.cssText = 'flex: 1; padding: 8px; background: #0a66c2; color: white; border: none; border-radius: 4px; cursor: pointer;';
+  copyBtn.style.cssText = `
+    flex: 1;
+    padding: 8px;
+    background: #0a66c2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  `;
 
   const insertBtn = document.createElement('button');
   insertBtn.textContent = 'Insert';
-  insertBtn.style.cssText = 'flex: 1; padding: 8px; background: #00a660; color: white; border: none; border-radius: 4px; cursor: pointer;';
+  insertBtn.style.cssText = `
+    flex: 1;
+    padding: 8px;
+    background: #00a660;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  `;
 
   btnContainer.appendChild(copyBtn);
   btnContainer.appendChild(insertBtn);
   popup.appendChild(btnContainer);
 
-  // Make draggable with cursor changes
+  // Draggable functionality
   let offsetX, offsetY, isDragging = false;
 
   header.addEventListener('mousedown', (e) => {
@@ -60,7 +127,8 @@ const suggestionPopup = (function() {
 
   document.addEventListener('mouseup', () => {
     isDragging = false;
-    popup.style.cursor = 'move';
+    popup.style.cursor = 'default';
+    header.style.cursor = 'move';
   });
 
   // Button functionality
@@ -86,7 +154,7 @@ const suggestionPopup = (function() {
   return popup;
 })();
 
-// Keep your working LinkedIn button code
+// Rest of your LinkedIn-specific code remains unchanged
 function createControlPanel(post, platform) {
   const container = document.createElement('div');
   container.className = 'comment-suggester-panel';
