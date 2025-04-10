@@ -28,8 +28,9 @@ def suggest_comment():
             "Content-Type": "application/json",
             "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
         }
-
-        base_prompt = f"Here is a LinkedIn post:\n\n{post_content}\n\n"
+        platform = data.get('platform', 'LinkedIn')
+        base_prompt = f"Here is a {platform} post:\n\n{post_content}\n\n"
+        #base_prompt = f"Here is a LinkedIn post:\n\n{post_content}\n\n"
         if style:
             base_prompt += f"Write a short, {style} comment I could post in response."
         else:
